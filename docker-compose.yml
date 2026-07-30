@@ -1,0 +1,62 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: taskhub-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - .env.example
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+
+  worker:
+    build:
+      context: ./backend
+    container_name: taskhub-worker
+    restart: unless-stopped
+    command: node src/workers/email.worker.js
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - .env.example
+    depends_on:
+      - rabbitmq
+
+  mongo:
+    image: mongo:8
+    container_name: taskhub-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    container_name: taskhub-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: taskhub-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
