@@ -88,4 +88,4 @@ docker compose up --build
 - [x] Worker Service
 - [ ] GitHub Actions CI/CD
 - [ ] Kubernetes
-- [ ] AWS Deployment
+- [ ] AWS Deployment"" 
