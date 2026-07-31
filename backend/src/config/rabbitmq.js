@@ -11,7 +11,8 @@ const connectRabbitMQ = async () => {
         try {
             console.log("🐰 Connecting to RabbitMQ...");
 
-            const connection = await amqp.connect("amqp://rabbitmq");
+            // const connection = await amqp.connect("amqp://rabbitmq");
+            const connection = await amqp.connect(process.env.RABBITMQ_URL);
 
             channel = await connection.createChannel();
 
