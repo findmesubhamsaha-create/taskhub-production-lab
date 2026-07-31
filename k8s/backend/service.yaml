@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: taskhub-api-service
+
+spec:
+  selector:
+    app: taskhub-api
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+
+  type: LoadBalancer
